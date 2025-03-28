@@ -1,0 +1,133 @@
+/api/admin/users
+
+curl -X GET -H "Authorization: Bearer <your-token>" \
+     http://localhost:5000/api/admin/users
+
+success: 200
+{
+    "users": [
+        {"id": 1, "name": "Admin User", "email": "admin@example.com", "role": "admin"}
+    ]
+}
+
+failure: 401
+    {"message":"Token is missing"}
+
+failure: 403
+    {"message":"Unauthorized"}
+
+
+/api/admin/users
+
+curl -X GET -H "Authorization: Bearer <your-token>" \
+     http://localhost:5000/api/admin/users
+
+Status: 200
+{
+  "users": [
+    {"id": 1, "name": "Admin User", "email": "admin@example.com", "role": "admin"}
+  ]
+}
+
+Failure (no token):
+{"message":"Token is missing"}
+
+Status: 401 
+Status: 403 Forbidden
+Failure (non-admin token):
+    {"message":"Unauthorized"}
+
+
+/api/admin/cars
+
+curl -X POST -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <your-token>" \
+     -d '{"resident_id":2,"license_plate":"ABC123"}' \
+     http://localhost:5000/api/admin/cars
+
+
+Status: 201 
+{"message":"Car assigned successfully"}
+
+Status: 400 
+{"message":"Error: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails ..."}
+{"message":"Error: 1062 (23000): Duplicate entry 'ABC123' for key 'cars.license_plate'"}
+{"message":"Token is missing"}  # or "Unauthorized"
+Failure (invalid resident_id):
+
+
+curl -X GET -H "Authorization: Bearer <your-token>" \
+     http://localhost:5000/api/admin/logs
+
+    Expected Output (example):
+    json
+
+{
+  "logs": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "event_type": "login",
+      "details": {"status": "success"},
+      "timestamp": "2025-03-28 10:00:00"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "event_type": "car_assigned",
+      "details": {"license_plate": "ABC123"},
+      "timestamp": "2025-03-28 10:01:00"
+    }
+  ]
+}
+Status: 200 OK
+Failure (no logs yet):
+json
+{"logs": []}
+Status: 200 OK
+Failure (no token or non-admin):
+json
+
+    {"message":"Token is missing"}  # or "Unauthorized"
+    Status: 401 or 403
+
+Full Test Sequence
+
+    Register Admin:
+    bash
+
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"email":"admin@example.com","password":"admin123","name":"Admin User","role":"admin"}' \
+     http://localhost:5000/api/register
+Log In and Get Token:
+bash
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"email":"admin@example.com","password":"admin123"}' \
+     http://localhost:5000/api/login
+
+    Copy <your-token>.
+
+List Users:
+
+curl -X GET -H "Authorization: Bearer <your-token>" \
+     http://localhost:5000/api/admin/users
+Add a User:
+
+curl -X POST -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <your-token>" \
+     -d '{"email":"jane@example.com","password":"pass123","name":"Jane Doe","role":"resident"}' \
+     http://localhost:5000/api/admin/users
+
+
+Assign a Car:
+
+curl -X POST -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <your-token>" \
+     -d '{"resident_id":2,"license_plate":"ABC123"}' \
+     http://localhost:5000/api/admin/cars
+
+
+View Logs (after adding test logs in SQL):
+
+curl -X GET -H "Authorization: Bearer <your-token>" \
+     http://localhost:5000/api/admin/logs
