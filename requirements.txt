@@ -4,12 +4,15 @@ autopep8
 
 # App
 cffi
-mysqlclient
 flask
+flask-session
 flask-sqlalchemy
 flask-login
-flask-wtf
-cryptography
+mysqlclient
+bcrypt
+pyjwt
+mysql
+mysql-connector-python
 
 #license plate model
 ultralytics

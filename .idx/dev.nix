@@ -11,9 +11,13 @@
     pkgs.python311Packages.setuptools
     pkgs.python311Packages.wheel
     pkgs.python311Packages.mysqlclient
-    pkgs.python311Packages.mysql-connector
     pkgs.mysql-client
-
+    pkgs.python311Packages.flask
+    pkgs.python311Packages.flask-session
+    pkgs.python311Packages.bcrypt
+    pkgs.python311Packages.pyjwt
+    pkgs.python311Packages.mysql-connector
+    
     # pkgs.python3Packages.opencv4
     pkgs.opencv2
     # pkgs.python311Packages.ultralytics
@@ -44,6 +48,8 @@
     pkgs.libxml2
     pkgs.openssl
     pkgs.libxcrypt
+
+    #flask
   ];
   
   # See: https://nixos.wiki/wiki/Mysql
