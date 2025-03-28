@@ -3,7 +3,13 @@ pip
 autopep8
 
 # App
+cffi
+mysqlclient
 flask
+flask-sqlalchemy
+flask-login
+flask-wtf
+cryptography
 
 #license plate model
 ultralytics
