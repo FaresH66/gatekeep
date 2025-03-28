@@ -1,0 +1,41 @@
+/api/register
+
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"email":"testuser@example.com","password":"password123","name":"Test User","role":"resident"}' \
+     http://localhost:5000/api/register
+
+success: 201
+    {"message":"User registered"}
+
+failure: 400
+    {"message":"Error: 1062 (23000): Duplicate entry 'testuser@example.com' for key 'users.email'"}
+
+
+/api/login
+
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"email":"testuser@example.com","password":"password123"}' \
+     http://localhost:5000/api/login
+
+success: 200
+    {
+    "message": "Login successful",
+    "role": "resident",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoicmVzaWRlbnQiLCJleHAiOjE3MTk1NjQ3MzB9...",
+    "user_id": 1
+    }
+
+failure: 401
+    {"message":"Invalid credentials"}
+
+/api/protected
+
+curl -X GET -H "Authorization: Bearer <your-token>" \
+     http://localhost:5000/api/protected
+
+success: 200
+    {"message":"Hello, user 1 (resident)"}
+
+failure: 401
+    {"message":"Token is missing"}
+    {"message":"Token has expired"}
